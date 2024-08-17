@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
+project(RapidJSON VERSION "1.1.0" LANGUAGES CXX)
 
 add_definitions(-DRAPIDJSON_HAS_STDSTRING)
 
