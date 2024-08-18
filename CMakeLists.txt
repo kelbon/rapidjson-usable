@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.21)
 project(RapidJSON VERSION "1.1.0" LANGUAGES CXX)
 
-add_definitions(-DRAPIDJSON_HAS_STDSTRING)
+add_compile_definitions(RAPIDJSON_HAS_STDSTRING=1)
 
-# add_definitions(-DRAPIDJSON_USE_MEMBERSMAP=1)
+# add_compile_definitions(RAPIDJSON_USE_MEMBERSMAP=1)
 
 add_library(rapidjsonlib INTERFACE)
 
