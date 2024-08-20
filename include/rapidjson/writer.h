@@ -68,6 +68,7 @@ enum WriteFlag {
     kWriteValidateEncodingFlag = 1, //!< Validate encoding of JSON strings.
     kWriteNanAndInfFlag = 2,        //!< Allow writing of Infinity, -Infinity and NaN.
     kWriteNanAndInfNullFlag = 4,    //!< Allow writing of Infinity, -Infinity and NaN as null.
+    kWriteUnquotedString = 8,         //!< removes quotes around strings
     kWriteDefaultFlags = RAPIDJSON_WRITE_DEFAULT_FLAGS  //!< Default write flags. Can be customized by defining RAPIDJSON_WRITE_DEFAULT_FLAGS
 };
 
@@ -398,8 +399,8 @@ protected:
             PutReserve(*os_, 2 + length * 6); // "\uxxxx..."
         else
             PutReserve(*os_, 2 + length * 12);  // "\uxxxx\uyyyy..."
-
-        PutUnsafe(*os_, '\"');
+        if (!(writeFlags & kWriteUnquotedString))
+            PutUnsafe(*os_, '\"');
         GenericStringStream<SourceEncoding> is(str);
         while (ScanWriteUnescapedString(is, length)) {
             const Ch c = is.Peek();
@@ -450,7 +451,8 @@ protected:
                 Transcoder<SourceEncoding, TargetEncoding>::TranscodeUnsafe(is, *os_))))
                 return false;
         }
-        PutUnsafe(*os_, '\"');
+        if (!(writeFlags & kWriteUnquotedString))
+            PutUnsafe(*os_, '\"');
         return true;
     }
 
